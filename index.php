@@ -1,9 +1,11 @@
 <?php
 //FrontController
 
+require_once "models/database.php";
+
 if(!isset($_GET['c'])){
     require_once "controllers/home.controller.php";
-    $controller = new HomeControlador();
+    $controller = new HomeController();
     call_user_func(array($controller,"Home"));
 }else{
     $controller = $_GET['c'];
