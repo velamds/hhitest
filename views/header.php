@@ -52,21 +52,21 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="?c=pedido">
               <span data-feather="file"></span>
-              Orders
+              Pedidos
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="?c=producto">
               <span data-feather="shopping-cart"></span>
-              Products
+              Productos
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="?c=cliente">
               <span data-feather="users"></span>
-              Customers
+              Clientes
             </a>
           </li>
         </ul>

@@ -93,4 +93,61 @@ class Producto{
 
         return $this;
     }
+
+    public function Listar(){
+        try{
+            $consulta=$this->pdo->prepare("SELECT * FROM producto;");
+            $consulta->execute();
+            return $consulta->fetchAll(PDO::FETCH_CLASS,__CLASS__);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Obtener($id){
+        try{
+            $consulta=$this->pdo->prepare("SELECT * FROM producto WHERE id=?;");
+            $consulta->execute(array($id));
+            $consulta->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+            return $consulta->fetch();
+
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Insertar(Producto $producto){
+        try{
+            $consulta="INSERT INTO producto(referencia, nombre, precio) VALUES (?,?,?);";
+            $this->pdo->prepare($consulta)
+                    ->execute(array(
+                        $producto->getReferencia(),
+                        $producto->getNombre(),
+                        $producto->getPrecio()
+                    ));
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Actualizar(Producto $producto){
+        try{
+            $consulta="UPDATE producto SET 
+                referencia=?,
+                nombre=?,
+                precio=?
+                WHERE id=?;
+            ";
+            $this->pdo->prepare($consulta)
+                    ->execute(array(
+                        $producto->getReferencia(),
+                        $producto->getNombre(),
+                        $producto->getPrecio(),
+                        $producto->getId()
+                    ));
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
 }
