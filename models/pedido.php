@@ -8,6 +8,7 @@ class Pedido{
     private $cliente;
     private $producto;
     private $cantidad;
+    private $fecha;
 
     public function __construct(){
         $this->pdo = Database::Connect();
@@ -92,6 +93,25 @@ class Pedido{
 
         return $this;
     }
+        /**
+     * Get the value of fecha
+     */ 
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set the value of fecha
+     *
+     * @return  self
+     */ 
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
 
     public function Listar(){
         try{
@@ -148,4 +168,36 @@ class Pedido{
             die($e->getMessage());
         }
     }
+
+    public function VentasPorProducto(){
+        try{
+            $consulta=$this->pdo->prepare("SELECT count(id) as venta,producto FROM pedido GROUP BY producto;");
+            $consulta->execute();
+            return $consulta->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function ComprasPorCliente(){
+        try{
+            $consulta=$this->pdo->prepare("SELECT count(id) as compra,cliente FROM pedido GROUP BY cliente;");
+            $consulta->execute();
+            return $consulta->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function ComprasPorFecha(){
+        try{
+            $consulta=$this->pdo->prepare("SELECT count(id) as compra,fecha FROM pedido GROUP BY fecha;");
+            $consulta->execute();
+            return $consulta->fetchAll(PDO::FETCH_OBJ);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+
 }

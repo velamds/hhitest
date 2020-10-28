@@ -8,6 +8,7 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Fecha</th>
                 <th>Cliente</th>
                 <th>Producto</th>
                 <th>Cantidad</th>
@@ -20,6 +21,7 @@
             <?php foreach($this->model->Listar() as $pedido):?>
                 <tr>
                     <td><?=$pedido->getId()?></td>
+                    <td><?=$pedido->getFecha()?></td>
                     <td><?=$this->clientes->Obtener($pedido->getCliente())->getNombre()?></td>
                     <td><?=$this->productos->Obtener($pedido->getProducto())->getNombre()?></td>
                     <td><?=$pedido->getCantidad()?></td>
