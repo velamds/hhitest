@@ -34,7 +34,7 @@ class Pedido{
     }
 
     /**
-     * Get the value of cliente
+     * Get the value of pedido
      */ 
     public function getCliente() : ?int
     {
@@ -42,7 +42,7 @@ class Pedido{
     }
 
     /**
-     * Set the value of cliente
+     * Set the value of pedido
      *
      * @return  self
      */ 
@@ -91,5 +91,61 @@ class Pedido{
         $this->cantidad = $cantidad;
 
         return $this;
+    }
+
+    public function Listar(){
+        try{
+            $consulta=$this->pdo->prepare("SELECT * FROM pedido;");
+            $consulta->execute();
+            return $consulta->fetchAll(PDO::FETCH_CLASS,__CLASS__);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Obtener($id){
+        try{
+            $consulta=$this->pdo->prepare("SELECT * FROM pedido WHERE id=?;");
+            $consulta->execute(array($id));
+            $consulta->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+            return $consulta->fetch();
+
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Insertar(Pedido $pedido){
+        try{
+            $consulta="INSERT INTO pedido(cliente, producto ,cantidad) VALUES (?,?,?);";
+            $this->pdo->prepare($consulta)
+                    ->execute(array(
+                        $pedido->getCliente(),
+                        $pedido->getProducto(),
+                        $pedido->getCantidad()
+                    ));
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Actualizar(Pedido $pedido){
+        try{
+            $consulta="UPDATE pedido SET 
+                cliente=?,
+                producto=?,
+                cantidad=?
+                WHERE id=?;
+            ";
+            $this->pdo->prepare($consulta)
+                    ->execute(array(
+                        $pedido->getCliente(),
+                        $pedido->getProducto(),
+                        $pedido->getCantidad(),
+                        $pedido->getId()
+                    ));
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
     }
 }
