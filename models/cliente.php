@@ -135,4 +135,66 @@ class Cliente{
 
         return $this;
     }
+
+    public function Listar(){
+        try{
+            $consulta=$this->pdo->prepare("SELECT * FROM cliente;");
+            $consulta->execute();
+            return $consulta->fetchAll(PDO::FETCH_CLASS,__CLASS__);
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Obtener($id){
+        try{
+            $consulta=$this->pdo->prepare("SELECT * FROM cliente WHERE id=?;");
+            $consulta->execute(array($id));
+            $consulta->setFetchMode(PDO::FETCH_CLASS, __CLASS__);
+            return $consulta->fetch();
+
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Insertar(Cliente $cliente){
+        try{
+            $consulta="INSERT INTO cliente(nombre, telefono, direccion, email, contrasena) VALUES (?,?,?,?,?);";
+            $this->pdo->prepare($consulta)
+                    ->execute(array(
+                        $cliente->getNombre(),
+                        $cliente->getTelefono(),
+                        $cliente->getDireccion(),
+                        $cliente->getEmail(),
+                        $cliente->getContrasena()
+                    ));
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
+
+    public function Actualizar(Cliente $cliente){
+        try{
+            $consulta="UPDATE cliente SET 
+                nombre=?,
+                telefono=?,
+                direccion=?,
+                email=?,
+                contrasena=?
+                WHERE id=?;
+            ";
+            $this->pdo->prepare($consulta)
+                    ->execute(array(
+                        $cliente->getNombre(),
+                        $cliente->getTelefono(),
+                        $cliente->getDireccion(),
+                        $cliente->getEmail(),
+                        $cliente->getContrasena(),
+                        $cliente->getId()
+                    ));
+        }catch(Exception $e){
+            die($e->getMessage());
+        }
+    }
 }
